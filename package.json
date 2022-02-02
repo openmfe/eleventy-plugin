@@ -1,0 +1,14 @@
+{
+    "name": "eleventy-plugin-openmfe",
+    "version": "1.0.0",
+    "description": "OpenMFE integration plugin for eleventy",
+    "main": "index.js",
+    "files": [
+        "index.js"
+    ],
+    "dependencies": {
+        "node-fetch": "^2.6.6",
+        "openmfe-manifest": "file:../openmfe-manifest",
+        "yaml": "^1.10.2"
+    }
+}
