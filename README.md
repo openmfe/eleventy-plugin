@@ -12,3 +12,23 @@ For example, assuming there is a microfrontend which offers the `hotel-offers` t
 ```
 
 Please note that currently only the Nunjucks language is supported.
+
+For instance, to create a full-blown instance of the `hotel-offers` microfrontend, you can use the following Nunjucks snippet:
+
+```liquid
+{\% openmfe "hotel-offers", { region: 1197 }, { semantic: true } %}
+```
+
+This generates the following output:
+
+```html
+<script type="application/ld+json">
+    // … full block of JSON-LD …
+</script>
+<hotel-offers region='1197'>
+    <div class=main style=all:initial;display:block;overflow:hidden>
+        <!-- full block of prerendered HTML (plus a bit of SVG for loading animation) -->
+    </div>
+</hotel-offers>
+<script src="http://localhost:9081/main.js" async></script>
+```
