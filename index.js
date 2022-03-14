@@ -1,4 +1,4 @@
-const getManifest = require('openmfe-manifest')
+const getManifest = require('@openmfe/manifest')
 const fetch = require('node-fetch')
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
         eleventyConfig.addNunjucksAsyncShortcode("openmfe", async (tag, attributes = {}, config = {}) => {
             // we need to load the manifest here, because the configFunction can’t be async
             if (!manifest) {
-                manifest = getManifest(await fetchAsText(options.manifest), options.manifest)
+                manifest = await getManifest(options.manifest)
             }
 
             const params = new URLSearchParams(attributes)
