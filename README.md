@@ -32,3 +32,32 @@ This generates the following output:
 </hotel-offers>
 <script src="http://localhost:9081/main.js" async></script>
 ```
+
+# Installation 
+
+You need to install the `openmfe` eleventy plugin by adding this code into the `.eleventy.js` file.
+
+```js 
+const openmfe = require('@openmfe/eleventy-plugin');
+
+eleventyConfig.addPlugin(openmfe, { manifest: 'https://<MFE_CDN_FOLDER>/openmfe/manifest.yaml' });
+```
+
+If you have multiple MFE's in your application: 
+
+```js 
+const openmfe = require('@openmfe/eleventy-plugin');
+
+eleventyConfig.addPlugin(openmfe, {
+    manifests: [
+        {
+            mfe: "mfe-demo",
+            manifest: "https://<MFE_DEMO_CDN_FOLDER>/openmfe/manifest.yaml",
+        },
+        {
+            mfe: "mfe-example",
+            manifest: "https://<MFE_EXAMPLE_CDN_FOLDER>/openmfe/manifest.yaml",
+        },
+    ],
+});
+```
