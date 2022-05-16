@@ -4,23 +4,32 @@ const fetch = require('node-fetch')
 module.exports = {
     initArguments: {},
     configFunction: function(eleventyConfig, options = {}) {
-        if (!options.manifest) {
+        if (!options.manifest && !options.manifests) {
             throw new Error(`A manifest URL must be passed as an option to the OpenMFE plugin.`)
         }
 
-        let manifest
+        if (options.manifest && options.manifests) {
+            throw new Error('You can`t use the manifest and manifests option at the same time.')
+        }
 
-        eleventyConfig.addNunjucksAsyncShortcode("openmfe", async (tag, attributes = {}, config = {}) => {
+        // Manifests cache
+        const manifestMap = new Map();
+
+        eleventyConfig.addNunjucksAsyncShortcode('openmfe', async (tag, attributes = {}, config = {}) => {
+
+            const manifestUrl = options.manifest ? options.manifest : options.manifests.find(({ mfe }) => mfe === tag).manifest;
+
             // we need to load the manifest here, because the configFunction can’t be async
-            if (!manifest) {
-                manifest = await getManifest(options.manifest)
-            }
+            const manifest = manifestMap.get(tag) ? manifestMap.get(tag) : await getManifest(manifestUrl);
+
+            manifestMap.set(tag, manifest);
 
             const params = new URLSearchParams(attributes)
-            const prerendered = await fetchAsText(`${manifest.url.prerender}?${params}`)
-            const semantic = config.semantic && manifest.url.semantic
-                ? await fetchAsText(`${manifest.url.semantic}?${params}`)
-                : ""
+
+            const [ prerendered, semantic ] = await Promise.all([
+                fetchAsText(`${manifest.url.prerender}?${params}`),
+                config.semantic && manifest.url.semantic ? fetchAsText(`${manifest.url.semantic}?${params}`) : Promise.resolve('')
+            ])
 
             return `
                 ${semantic ? `<script type="application/ld+json">${semantic}</script>` : ""}
