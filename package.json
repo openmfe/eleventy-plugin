@@ -8,7 +8,7 @@
     ],
     "dependencies": {
         "node-fetch": "^2.6.6",
-        "@openmfe/manifest": "^0.2.3",
+        "@openmfe/manifest": "^0.3.0",
         "yaml": "^2.2.1"
     }
 }
