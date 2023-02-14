@@ -1,5 +1,6 @@
 const getManifest = require('@openmfe/manifest')
 const fetch = require('node-fetch')
+const crypto = require("crypto")
 
 module.exports = {
     initArguments: {},
@@ -36,7 +37,7 @@ module.exports = {
                 <${tag} ${Object.entries(attributes).map(attr => `${attr[0]}='${attr[1]}'`).join(' ')}>
                     ${prerendered}
                 </${tag}>
-                <script src="${manifest.url.frontend}" async></script>`
+                <script src="${manifest.url.frontend}?${crypto.randomUUID()}" async></script>`
         })
     }
 }
